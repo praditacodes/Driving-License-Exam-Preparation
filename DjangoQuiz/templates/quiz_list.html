@@ -1,0 +1,12 @@
+<!-- quiz_list.html -->
+
+{% extends 'base.html' %}  
+{% load static %}
+{% block content %} 
+<h1>Quiz List</h1>
+<ul>
+    {% for quiz in quizzes %}
+        <li>{{ quiz.question }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

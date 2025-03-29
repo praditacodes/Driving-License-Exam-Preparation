@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>User Profile</h2>
+    <div class="profile-container">
+        <div class="profile-field">
+            <label>First Name:</label>
+            <p>{{ request.user.first_name }}</p>
+        </div>
+        <div class="profile-field">
+            <label>Last Name:</label>
+            <p>{{ request.user.last_name }}</p>
+        </div>
+        <div class="profile-field">
+            <label>Email:</label>
+            <p>{{ request.user.email }}</p>
+        </div>
+    </div>
+    <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a> <!-- Link to edit profile page -->
+
+    <!-- Custom CSS -->
+    <style>
+        .profile-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .profile-field {
+            margin-bottom: 15px;
+        }
+
+        .profile-field label {
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-field p {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .btn-primary {
+            text-align: center;
+            padding: 8px 15px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+{% endblock %}

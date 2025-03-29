@@ -1,0 +1,136 @@
+{% load static %}
+
+<style>
+  /* Dark Pink navbar background */
+  .navbar-custom {
+    background-color: #C2185B; /* Dark Pink */
+  }
+
+  /* Navbar links color and hover effect */
+  .navbar-custom .navbar-nav .nav-link {
+    color: #ffffff; /* White text for better contrast */
+    font-size: 18px;
+    padding: 10px 15px; /* Added padding for consistent spacing */
+  }
+
+  .navbar-custom .navbar-nav .nav-link:hover {
+    color: #FF4081; /* Light Pink when hovering */
+  }
+
+  /* Active navbar link */
+  .navbar-custom .navbar-nav .nav-item.active .nav-link {
+    color: #D81B60; /* Medium Pink for active item */
+  }
+
+  /* Greet section styling */
+  .greet {
+    font-size: 18px;
+    color: #ffffff; /* White for better contrast */
+    margin-left: 15px;
+  }
+
+  /* Navbar toggler icon color */
+  .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .navbar-toggler-icon {
+    background-color: transparent;
+  }
+
+  /* Navbar brand styling */
+  .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF4081; /* Light Pink */
+  }
+
+  .navbar-brand:hover {
+    color: #D81B60; /* Medium Pink on hover */
+  }
+
+  /* Adjusting layout for login, signup, and other items */
+  .navbar-left {
+    margin-right: auto;
+  }
+
+  .navbar-right {
+    margin-left: auto;
+  }
+
+  /* Add gap between navbar items for better spacing */
+  .navbar-nav .nav-item {
+    margin-right: 20px;
+  }
+
+  /* Remove gap for the last item */
+  .navbar-nav .nav-item:last-child {
+    margin-right: 0;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+    .navbar-nav {
+      text-align: center;
+    }
+    .navbar-nav .nav-item {
+      margin: 5px 0;
+    }
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav navbar-left">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'home' %}">Home</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav navbar-right">
+      {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+        </li>
+
+        {% if request.user.is_staff %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'add_question' %}">Add Question</a>
+          </li>
+        {% endif %}
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'quiz_list' %}">Quizzes</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'leaderboard' %}">Leaderboard</a>
+        </li>
+
+        <!-- Logout button as a POST form -->
+        <li class="nav-item">
+          <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="nav-link btn btn-link" style="color:white; background:none; border:none;">
+              Logout
+            </button>
+          </form>
+        </li>
+
+        <span class="greet">Hello, {{ request.user.username }}</span>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'signup' %}">Signup</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>

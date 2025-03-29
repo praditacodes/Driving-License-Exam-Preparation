@@ -1,0 +1,37 @@
+<!-- random_questions.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Questions</title>
+</head>
+<body>
+    <h1>25 Random Questions</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for question in questions %}
+        <div>
+            <p>{{ question.question_text }}</p>
+            <label>
+                <input type="radio" name="question_{{ forloop.counter }}" value="a">
+                {{ question.option_a }}
+            </label><br>
+            <label>
+                <input type="radio" name="question_{{ forloop.counter }}" value="b">
+                {{ question.option_b }}
+            </label><br>
+            <label>
+                <input type="radio" name="question_{{ forloop.counter }}" value="c">
+                {{ question.option_c }}
+            </label><br>
+            <label>
+                <input type="radio" name="question_{{ forloop.counter }}" value="d">
+                {{ question.option_d }}
+            </label><br>
+        </div>
+        {% endfor %}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

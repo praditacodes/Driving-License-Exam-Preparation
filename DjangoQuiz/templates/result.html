@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if user.is_authenticated %}
+        <h2 class="text-center text-primary mb-4">Quiz Results</h2>
+        
+        <div class="card p-4 mb-4 shadow-sm" style="max-width: 400px; margin: 0 auto;">
+            <h4 class="text-center">Your Quiz Results:</h4>
+            <div class="text-center mb-3">
+                <img src="{% static 'img/resultsss.jpg' %}" alt="Quiz Result image" style="max-width: 100%; height: auto;">
+            </div>
+            <p><strong>Score:</strong> {{ score }}</p>
+            <p><strong>Correct Answers:</strong> {{ correct }}</p>
+            <p><strong>Wrong Answers:</strong> {{ wrong }}</p>
+            <p><strong>Percentage:</strong> {{ percent }}%</p>
+            <p><strong>Total Questions:</strong> {{ total }}</p>
+        </div>
+
+        <div class="text-center">
+            <a href="{% url 'home' %}" class="btn btn-primary">Take the Quiz Again</a>
+        </div>
+    
+    {% else %}
+        <div class="alert alert-warning text-center">
+            <h4>You must be logged in to view your quiz results.</h4>
+            <a href="{% url 'login' %}" class="btn btn-success">Login</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

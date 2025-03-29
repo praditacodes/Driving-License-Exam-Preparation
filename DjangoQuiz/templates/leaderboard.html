@@ -1,0 +1,117 @@
+{% extends 'base.html' %}  
+{% load static %}
+
+{% block content %} 
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+    }
+
+    .leaderboard {
+        margin: 30px auto;
+        max-width: 800px;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .leaderboard h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    table th, table td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    table td {
+        background-color: #f8f9fa;
+    }
+
+    .pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .pagination a {
+        text-decoration: none;
+        margin: 0 5px;
+        color: #007bff;
+    }
+
+    .pagination a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4">Quiz Leaderboard</h2>
+
+    
+
+    <section class="leaderboard">
+        <h2>Top Scorers</h2>
+
+        {% if leaders %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Username</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for leader in leaders %}
+                        <tr>
+                            <td {% if forloop.counter == 1 %} style="color: gold;" 
+                                {% elif forloop.counter == 2 %} style="color: silver;" 
+                                {% elif forloop.counter == 3 %} style="color: #cd7f32;" {% endif %}>
+                                {{ forloop.counter }}
+                            </td>
+                            <td>{{ leader.user.username }}</td>
+                            <td>{{ leader.score }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-center">No scores available yet. Start taking quizzes to appear on the leaderboard!</p>
+        {% endif %}
+    </section>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if leaders.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ leaders.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ leaders.number }} of {{ leaders.paginator.num_pages }}.
+            </span>
+
+            {% if leaders.has_next %}
+                <a href="?page={{ leaders.next_page_number }}">next</a>
+                <a href="?page={{ leaders.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4">Welcome to the Driving License Exam Preparation Portal! 🏍️</h2>
+    
+    {% if request.method == 'POST' %}
+    <div class="card p-4 mb-4 shadow-sm">
+        <h4 class="text-center">Your Quiz Results:</h4>
+        <p><strong>Score:</strong> {{ score }}</p>
+        <p><strong>Correct Answers:</strong> {{ correct }}</p>
+        <p><strong>Wrong Answers:</strong> {{ wrong }}</p>
+        <p><strong>Percentage:</strong> {{ percent }}%</p>
+        <p><strong>Total Questions:</strong> {{ total }}</p>
+    </div>
+    {% else %}
+    <p id="displaytimer"><b>Timer: 0 seconds</b></p>
+    <input type="hidden" id="timer" name="timer" value="0">
+    
+    <form method="post" action="{% url 'home' %}">
+        {% csrf_token %}
+        <div class="row">
+            {% for quiz in questions %}
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Question {{ quiz.id }}: {{ quiz.question }}</h5>
+
+                        <!-- Display Image if Available -->
+                        {% if quiz.image %}
+                        <img src="{{ quiz.image.url }}" alt="Image" class="img-fluid mb-2" width="200px">
+                        {% endif %}
+
+                        <!-- Display options -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="q_{{ quiz.id }}" value="{{ quiz.option_a }}" required>
+                            <label class="form-check-label">A: {{ quiz.option_a }}</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="q_{{ quiz.id }}" value="{{ quiz.option_b }}">
+                            <label class="form-check-label">B: {{ quiz.option_b }}</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="q_{{ quiz.id }}" value="{{ quiz.option_c }}">
+                            <label class="form-check-label">C: {{ quiz.option_c }}</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="q_{{ quiz.id }}" value="{{ quiz.option_d }}">
+                            <label class="form-check-label">D: {{ quiz.option_d }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Submit Quiz</button>
+        </div>
+    </form>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if questions.has_previous %}
+                <a href="?page=1">&laquo; First</a>
+                <a href="?page={{ questions.previous_page_number }}">Previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ questions.number }} of {{ questions.paginator.num_pages }}.
+            </span>
+    
+            {% if questions.has_next %}
+                <a href="?page={{ questions.next_page_number }}">Next</a>
+                <a href="?page={{ questions.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <!-- Timer Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const timer = document.getElementById('displaytimer');
+            const inputtag = document.getElementById('timer');
+            let t = 0;
+            let timerStarted = false;
+
+            // Start timer when any radio button is clicked
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (!timerStarted) {
+                        timerStarted = true; // Prevent the timer from starting multiple times
+                        setInterval(() => {
+                            t += 1;
+                            timer.innerHTML = "<b>Timer: " + t + " seconds</b>";
+                            if (inputtag) {
+                                inputtag.value = t;
+                            }
+                        }, 1000);
+                    }
+                });
+            });
+        });
+    </script>
+
+    {% endif %}
+</div>
+{% endblock %}

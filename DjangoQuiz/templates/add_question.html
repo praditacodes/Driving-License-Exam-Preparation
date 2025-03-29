@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Add a New Question</h2>
+
+  <form method="post" class="question-form">
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- This will render the form fields with labels and inputs -->
+    <button type="submit" class="btn btn-primary">Add Question</button>
+  </form>
+</div>
+
+<!-- Custom CSS -->
+<style>
+  .container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .question-form {
+    margin-top: 30px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background-color: #007bff;
+    color: white;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+
+  /* Form Styling */
+  .question-form label {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+  }
+
+  .question-form .form-group {
+    margin-bottom: 20px;
+  }
+</style>
+{% endblock %}
